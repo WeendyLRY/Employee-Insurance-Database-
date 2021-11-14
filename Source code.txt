@@ -1,0 +1,156 @@
+create table employee 
+(
+employeeID number(12) primary key,
+employeeName varchar2(255) not null,
+employeeDateofHire date not null,
+employeePosition varchar2 (255) not null,
+employeePhoneNumber number(11) not null
+);
+
+create table claim
+(
+claimID varchar2 (10) primary key, 
+claimStatus varchar2(50), 
+claimCost number(5,2) not null, 
+injuryID varchar2(10), 
+dateofIssue date,
+
+CONSTRAINT FKCL_injuryID FOREIGN KEY (injuryID) REFERENCES INJURY (injuryID) ON DELETE CASCADE
+);
+
+create table employeeclaim
+(
+employeeID number (12), 
+claimID varchar2(10), 
+supervisorID number(12), 
+branchManagerID number(12), 
+supervisorApproval varchar2(50), 
+branchManagerApproval varchar2(50),
+
+primary key (employeeID, claimID),
+CONSTRAINT FKEC_employeeID FOREIGN KEY (employeeID) REFERENCES EMPLOYEE (employeeID) ON DELETE CASCADE,
+CONSTRAINT FKEC_claimID FOREIGN KEY (claimID) REFERENCES CLAIM (claimID) ON DELETE CASCADE,
+CONSTRAINT FKEC_supervisorID FOREIGN KEY (supervisorID) REFERENCES SUPERVISOR (supervisorID) ON DELETE CASCADE,
+CONSTRAINT FKEC_branchManagerID FOREIGN KEY (branchManagerID) REFERENCES BRANCHMANAGER (branchManagerID) ON DELETE CASCADE
+);
+
+create table supervisor
+(
+supervisorID number (12) primary key,
+supervisorName varchar2 (255) not null, 
+supervisorDateofHired date, 
+supervisorPhoneNumber number (11) 
+);
+
+create table branchmanager
+(
+branchManagerName varchar2 (50) not null, 
+branchManagerID number (12) primary key, 
+branchManagerPhoneNumber number(11), 
+branchManagerDateofHire date
+);
+
+create table injury
+(
+injuryID varchar2(10) primary key,
+medicalReportID varchar2(10),
+dateofinjury date,
+injuryCategory varchar2 (255),
+CONSTRAINT FKIQ_medicalReportID FOREIGN KEY (medicalReportID) REFERENCES MEDICALREPORT (medicalReportID) ON DELETE CASCADE
+);
+
+create table medicalreport 
+(
+medicalReportID varchar2(10) primary key, 
+doctorName varchar2(255), 
+hospitalName varchar2 (255), 
+hospitalPostcode number(5), 
+injuryDescription varchar2(255), 
+number(4)
+);
+
+INSERT INTO employee VALUES(970915128821, 'Jojo Christie', '31-Jul-2019', 'Corporalki Wind Summoner', 60189923457);
+INSERT INTO employee VALUES(950802014321, 'Kevin Sanjaya Sukamoljo', '31-Jul-2019', 'Corporalki Healers', 60189923457);
+INSERT INTO employee VALUES(970907042311, 'Timothee Chalamet', '28-Aug-2019', 'Etherealki Squallers', 601783990);
+INSERT INTO employee VALUES(900819063226, 'Nur Ariana Nur Grande binti Bungawan', '20-Jun-2018', 'Etherealki Tidemakers', 60164553221);
+INSERT INTO employee VALUES(890920107218, 'Dayang Siti Maimunah binti Haji Sabri', '11-Apr-2019', 'Materialki Alkemi', 60189923457);
+INSERT INTO employee VALUES(920812091120, 'Intan Sarah binti Awang Sulaiman', '03-May-2019', 'Materialki Durasts', 60189023444);
+
+INSERT INTO claim VALUES ('CL0001', 'accepted', 300.00, 'INJ0001', '1-JAN-2021');
+
+INSERT INTO EMPLOYEECLAIM VALUES (970915128821, 'CL0001', 910909047731, 900129036723, 'accepted', 'accepted');
+
+INSERT INTO SUPERVISOR VALUES (910909047731, 'Ran Takahashi', '20-apr-2009', 60167219928);
+
+INSERT INTO BRANCHMANAGER VALUES ('Lee Zii Jia', 900129036723, 60182321123, '20-Mar-2010');
+
+INSERT INTO INJURY VALUES ('INJ0001', 'MR0000', '28-dec-2021', 'minor');
+
+INSERT INTO MEDICALREPORT VALUES ('MR0000', '...', '...', 0, '...', 3);
+
+INSERT INTO MEDICALREPORT VALUES ('MR0001', 'Dr Cinta Laura', 'Hospital Duchess of Kent', 88450, 'Severe sprained angkle', 3);
+INSERT INTO MEDICALREPORT VALUES ('MR0002', 'Dr Carlisle Cullen', 'Phoenix Central Hospital', 49500, 'Skull breakage', 7);
+INSERT INTO MEDICALREPORT VALUES ('MR0003', 'Dr Zhang Jie', 'Phoenix Central Hospital', 90705, 'Skull breakage', 7);
+INSERT INTO MEDICALREPORT VALUES ('MR0004', 'Dr Allison DiLaurentis', 'Rosewood Hospital', 80605, 'Broken toe', 5);
+INSERT INTO MEDICALREPORT VALUES ('MR0005', 'Dr Mona Van der Waal', 'Rosewood Hospital', 80605, 'Splinter due to excessive heat', 4);
+INSERT INTO MEDICALREPORT VALUES ('MR0006', 'Dr Zhang Jie', 'Phoenix Central Hospital', 90705, 'Fatigued hand syndrome', 1);
+INSERT INTO MEDICALREPORT VALUES ('MR0007', 'Dr Meredith Gray', 'Phoenix Central Hospital', 49500, 'Slipped interbrate disc', 1);
+INSERT INTO MEDICALREPORT VALUES ('MR0008', 'Dr Carlisle Cullen', 'Phoenix Central Hospital', 49500, 'Covid19', 5);
+INSERT INTO MEDICALREPORT VALUES ('MR0009', 'Dr Carlisle Cullen', 'Phoenix Central Hospital', 49500, 'Covid19', 2);
+INSERT INTO MEDICALREPORT VALUES ('MR0010', 'Dr Carlisle Cullen', 'Phoenix Central Hospital', 49500, 'Covid19', 1);
+
+
+
+INSERT INTO INJURY VALUES ('INJ0001', 'MR0000', '28-dec-2021', 'minor');
+INSERT INTO INJURY VALUES ('INJ0002', 'MR0001', '9-feb-2021', 'minor');
+INSERT INTO INJURY VALUES ('INJ0003', 'MR0000', '9-mar-2021', 'minor');
+INSERT INTO INJURY VALUES ('INJ0004', 'MR0000', '10-apr-2021', 'minor');
+INSERT INTO INJURY VALUES ('INJ0005', 'MR0002', '10-may-2021', 'major');
+INSERT INTO INJURY VALUES ('INJ0006', 'MR0003', '19-jun-2021', 'major');
+INSERT INTO INJURY VALUES ('INJ0007', 'MR0004', '01-jul-2021', 'major');
+INSERT INTO INJURY VALUES ('INJ0008', 'MR0005', '09-aug-2021', 'major');
+INSERT INTO INJURY VALUES ('INJ0009', 'MR0006', '29-sep-2021', 'major');
+INSERT INTO INJURY VALUES ('INJ0010', 'MR0007', '15-dec-2021', 'major');
+
+
+
+INSERT INTO claim VALUES ('CL0002', 'accepted', 300.00, 'INJ0002', '10-FEB-2021');
+INSERT INTO claim VALUES ('CL0003', 'pending', 300.00, 'INJ0003', '13-MAR-2021');
+INSERT INTO claim VALUES ('CL0004', 'rejected', 0.00, 'INJ0004', '15-APR-2021');
+INSERT INTO claim VALUES ('CL0005', 'rejected', 0.00, 'INJ0005', '12-MAY-2021');
+INSERT INTO claim VALUES ('CL0006', 'rejected', 150.00, 'INJ0006', '22-JUNE-2021');
+INSERT INTO claim VALUES ('CL0007', 'accepted', 300.00, 'INJ0007', '03-JUL-2021');
+INSERT INTO claim VALUES ('CL0008', 'accepted', 400.00, 'INJ0008', '14-AUG-2021');
+INSERT INTO claim VALUES ('CL0009', 'pending', 0.00, 'INJ0009', '30-SEP-2021');
+INSERT INTO claim VALUES ('CL0010', 'rejected', 0.00, 'INJ0010', '20-DEC-2021');
+
+--INSERT INTO EMPLOYEECLAIM VALUES (970915128821, 'CL0001', 910909047731, 900129036723, 'accepted', 'accepted');
+INSERT INTO EMPLOYEECLAIM VALUES (970915128821, 'CL0001', 910909047731, 900129036723, 'accepted', 'accepted');
+INSERT INTO EMPLOYEECLAIM VALUES (970915128821, 'CL0002', 910909047731, 900129036723, 'accepted', 'accepted');
+INSERT INTO EMPLOYEECLAIM VALUES (970915128821, 'CL0003', 910909047731, 900129036723, 'accepted', 'accepted');
+INSERT INTO EMPLOYEECLAIM VALUES (970915128821, 'CL0004', 910909047731, 900129036723, 'accepted', 'accepted');
+INSERT INTO EMPLOYEECLAIM VALUES (970907042311, 'CL0005', 910909047731, 900129036723, 'accepted', 'accepted');
+INSERT INTO EMPLOYEECLAIM VALUES (900819063226, 'CL0006', 910909047731, 900129036723, 'accepted', 'accepted');
+INSERT INTO EMPLOYEECLAIM VALUES (890920107218, 'CL0007', 910909047731, 900129036723, 'accepted', 'accepted');
+INSERT INTO EMPLOYEECLAIM VALUES (890920107218, 'CL0008', 910909047731, 900129036723, 'accepted', 'accepted');
+INSERT INTO EMPLOYEECLAIM VALUES (950802014321, 'CL0009', 910909047731, 900129036723, 'accepted', 'accepted');
+INSERT INTO EMPLOYEECLAIM VALUES (920812091120, 'CL0010', 910909047731, 900129036723, 'accepted', 'accepted');
+
+
+
+INSERT INTO SUPERVISOR VALUES (910909047731, 'Ran Takahashi', '20-apr-2009', 60167219928);
+INSERT INTO SUPERVISOR VALUES (710909049732, 'Catalina Martin', '20-dec-2005', 60195598123);
+
+INSERT INTO BRANCHMANAGER VALUES ('Lee Zii Jia', 900129036723, 60182321123, '20-Mar-2010');
+INSERT INTO BRANCHMANAGER VALUES ('Chen Dong Ping', 950707118721, 60192314456, '19-Apr-2010');
+
+select * from employee;
+select * from claim;
+select * from employee claim;
+select * from supervisor;
+select * from brandmanager;
+select * from injury;
+select * from medicalreport;
+
+
+
